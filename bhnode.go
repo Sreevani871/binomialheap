@@ -1,8 +1,6 @@
 /* This program represents structure of node in binomial heap and implements union operation which is essential in performing any operations with binomial heap */
 package binomialheapQ
 
-//import "fmt"
-
 /* BinominalHeapNode struct declaration*/
 type BinomialHeapNode struct {
 	value        int               //value for storig element into the bh
@@ -43,4 +41,24 @@ func Union(n1 *BinomialHeapNode, n2 *BinomialHeapNode) *BinomialHeapNode {
 		n2.link(n1)
 		return n2
 	}
+}
+
+/*Decrease the node value by value passed by the parameter.If the parentnode value is greater than decresed key node then swaping takes place */
+func (bn *BinomialHeapNode) Decrease_Key1(val int) {
+	bn.value = bn.value - val
+
+	for bn.parent != nil && bn.parent.parent != nil && bn.value < bn.parent.value {
+
+		bn.value, bn.parent.value = bn.parent.value, bn.value
+
+		if bn.parent.parent != nil {
+			bn = bn.parent
+
+		}
+
+	}
+	if bn.value < bn.parent.value {
+		bn.value, bn.parent.value = bn.parent.value, bn.value
+	}
+
 }

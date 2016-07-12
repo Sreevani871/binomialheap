@@ -22,6 +22,7 @@ func InsertDL(head **BinomialHeapNode, node *BinomialHeapNode) {
 	} else if prev != nil && next == nil {
 		prev.rightsibling = node
 		node.rightsibling = next
+		node.parent = prev
 	}
 }
 

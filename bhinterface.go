@@ -4,8 +4,8 @@ package binomialheapQ
 
 type BinomialHeap interface {
 	Insert(int)
-	Remove() int
-	Size() int
-	Trees() int
+	Del_Min() int
+	Find_Min()
+	Decrease_Key()
 	Merge(BinomialHeap)
 }
