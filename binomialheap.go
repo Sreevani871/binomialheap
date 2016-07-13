@@ -28,7 +28,9 @@ func (bh *Binomial_Heap) Insert(value int) {
 
 /* Method for deleting minimum element from the binomial heap */
 func (bh *Binomial_Heap) Del_Min() int {
-
+	if bh.forest_head == nil {
+		return -1
+	}
 	bh.size -= 1
 	min := GetMinimumNode(bh.forest_head)
 	RemoveFromDL(&bh.forest_head, min)
@@ -43,6 +45,9 @@ func (bh *Binomial_Heap) Del_Min() int {
 
 /* Find_Min method gets the minimum node value from binomial heap*/
 func (bh *Binomial_Heap) Find_Min() int {
+	if bh.forest_head == nil {
+		return -1
+	}
 	head := bh.forest_head
 	min := GetMinimumNode(head)
 	return min.value
@@ -59,7 +64,7 @@ func (bh *Binomial_Heap) Decrease_Key(keyvalue int, decvalue int) {
 func (bh *Binomial_Heap) Decrease(keyvalue int, decvalue int) {
 
 	if bh.forest_head == nil {
-		fmt.Println("Empty")
+		fmt.Println("binomial heap is empty")
 	}
 
 	for _, node := range NodeIterator(bh.forest_head) { //Iterate through all tree nodes
@@ -138,7 +143,6 @@ func (bn *BinomialHeapNode) PrintDFS() {
 /* This method returns number of trees present in binomial heap  */
 func (bh *Binomial_Heap) Trees() int {
 	n := bh.size
-	fmt.Println("size", n)
 	var count int
 	for n > 0 {
 		if n%2 == 1 {
