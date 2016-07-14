@@ -50,13 +50,13 @@ func Test_Del_Min(t *testing.T) {
 
 func Test_Del_Min1(t *testing.T) {
 	heap := S.New()
-	size := 2000
+	size := 100000
 	for i := 0; i < size; i++ {
 		n := size - 1 - i
 		//fmt.Println("insert", n)
 		heap.Insert(n)
 	}
-	for i := 0; i < 2000; i++ {
+	for i := 0; i < size; i++ {
 		n := heap.Del_Min()
 		if n != i {
 			t.Error("Expected", i, "Got", n)
@@ -125,7 +125,7 @@ func Test_merge(t *testing.T) {
 }
 
 func slice(start int, end int) []int {
-	// [start, end)
+
 	slice := make([]int, 0, end-start)
 
 	for i := start; i < end; i++ {
@@ -135,7 +135,7 @@ func slice(start int, end int) []int {
 }
 
 func insertele(bh *S.Binomial_Heap, values []int) {
-	// wrapper for inserting multiple elements into a heap.
+
 	for _, elem := range values {
 		bh.Insert(elem)
 	}
