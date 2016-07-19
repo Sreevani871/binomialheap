@@ -1,7 +1,7 @@
 /* Binomial heap is forest consisting of binomial trees which satisfy min heap property.
 Here it consists of Binomialheap forest structure and implementation of binomial heap interface methods */
 
-package binomialheapQ
+package binomialheap
 
 import "fmt"
 
@@ -29,6 +29,7 @@ func (bh *Binomial_Heap) Insert(value int) {
 /* Method for deleting minimum element from the binomial heap */
 func (bh *Binomial_Heap) Del_Min() int {
 	if bh.forest_head == nil {
+		//fmt.Println("Heap is empty")
 		return -1
 	}
 	bh.size -= 1
@@ -36,6 +37,7 @@ func (bh *Binomial_Heap) Del_Min() int {
 	RemoveFromDL(&bh.forest_head, min)
 
 	for _, child := range NodeIterator(min.childrenNode) {
+
 		RemoveFromDL(&min.childrenNode, child)
 		bh.put(child)
 	}
@@ -93,6 +95,7 @@ func (bh *Binomial_Heap) Merge(other *Binomial_Heap) {
 	bh.size += other.size
 
 	for _, child := range NodeIterator(other.forest_head) {
+
 		RemoveFromDL(&other.forest_head, child)
 		bh.put(child)
 	}
@@ -102,6 +105,10 @@ func (bh *Binomial_Heap) Merge(other *Binomial_Heap) {
 
 func (bh *Binomial_Heap) Size() int {
 	return bh.size
+}
+
+func (bh *Binomial_Heap) IsEmpty() bool {
+	return bh.forest_head == nil
 }
 
 /* Inserting newnode into the DL maintaing unique order trees in binomial heap */
@@ -152,4 +159,8 @@ func (bh *Binomial_Heap) Trees() int {
 	}
 	fmt.Println(count)
 	return count
+}
+func (bh *Binomial_Heap) FindMin() int {
+	srnode := GetMinimumNode(bh.forest_head)
+	return srnode.value
 }

@@ -1,6 +1,8 @@
 /* Double linked list is used to store values of a binomial heap */
 
-package binomialheapQ
+package binomialheap
+
+//import "fmt"
 
 /* Method to insert node into the forest*/
 func InsertDL(head **BinomialHeapNode, node *BinomialHeapNode) {
@@ -21,21 +23,23 @@ func InsertDL(head **BinomialHeapNode, node *BinomialHeapNode) {
 		*head = node
 	} else if prev != nil && next == nil {
 		prev.rightsibling = node
+	} else if prev != nil && next != nil {
+		prev.rightsibling = node
 		node.rightsibling = next
-		node.parent = prev
 	}
 }
 
 /* Method to remove node from forest */
 func RemoveFromDL(head **BinomialHeapNode, node *BinomialHeapNode) {
-
 	leftsib := GetLeftsibling(*head, node)
 	if leftsib == nil {
 		*head = node.rightsibling
 	} else {
 		leftsib.rightsibling = node.rightsibling
+
 	}
 	node.rightsibling = nil
+	//fmt.Println("node.rightsibling value", node.rightsibling.value)
 }
 
 /* To remove node form binomial heap need to find leftsibling,So this method returns leftsibling*/

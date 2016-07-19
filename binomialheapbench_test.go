@@ -1,16 +1,14 @@
-package binomialheapQ
+package binomialheap
 
 import (
-	S "github.com/Sreevani871/binomialheapQ"
+	S "github.com/Sreevani871/binomialheap"
 	"testing"
 )
 
 func BenchmarkInsert(b *testing.B) {
 	heap := S.New()
 	for j := 0; j < b.N; j++ {
-		for i := 0; i < 100000; i++ {
-			heap.Insert(i)
-		}
+		heap.Insert(5)
 	}
 }
 
@@ -41,9 +39,23 @@ func BenchmarkMerge(b *testing.B) {
 func BenchmarkDecrease_Key(b *testing.B) {
 	heap := insert(0, 100000)
 	for i := 0; i < b.N; i++ {
-		heap.Decrease_Key(40, 43)
+		heap.Decrease_Key(40, 1)
 	}
 
+}
+
+func BenchmarkFindMin(b *testing.B) {
+	heap1 := insert(0, 100000)
+	for i := 0; i < b.N; i++ {
+		heap1.FindMin()
+	}
+}
+
+func BenchmarkIsEmpty(b *testing.B) {
+	heap1 := insert(0, 10)
+	for i := 0; i < b.N; i++ {
+		heap1.IsEmpty()
+	}
 }
 
 func insert(start, end int) *S.Binomial_Heap {

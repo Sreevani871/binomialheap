@@ -1,5 +1,5 @@
 /* This program represents structure of node in binomial heap and implements union operation which is essential in performing any operations with binomial heap */
-package binomialheapQ
+package binomialheap
 
 /* BinominalHeapNode struct declaration*/
 type BinomialHeapNode struct {
@@ -23,7 +23,7 @@ func NewBinomialHeapNode(value int) *BinomialHeapNode {
 }
 
 /* contain iserts the linked nodes into into the DL */
-func (bn *BinomialHeapNode) link(other *BinomialHeapNode) {
+func (bn *BinomialHeapNode) Link(other *BinomialHeapNode) {
 
 	InsertDL(&bn.childrenNode, other)
 	other.parent = bn //make bn node as the parent node of other node
@@ -34,11 +34,11 @@ func Union(n1 *BinomialHeapNode, n2 *BinomialHeapNode) *BinomialHeapNode {
 
 	if n1.value < n2.value {
 		n1.order += 1
-		n1.link(n2)
+		n1.Link(n2)
 		return n1
 	} else {
 		n2.order += 1
-		n2.link(n1)
+		n2.Link(n1)
 		return n2
 	}
 }
@@ -46,19 +46,20 @@ func Union(n1 *BinomialHeapNode, n2 *BinomialHeapNode) *BinomialHeapNode {
 /*Decrease the node value by value passed by the parameter.If the parentnode value is greater than decresed key node then swaping takes place */
 func (bn *BinomialHeapNode) Decrease_Key1(val int) {
 	bn.value = bn.value - val
+	if bn.parent != nil {
+		for bn.parent != nil && bn.parent.parent != nil && bn.value < bn.parent.value {
 
-	for bn.parent != nil && bn.parent.parent != nil && bn.value < bn.parent.value {
+			bn.value, bn.parent.value = bn.parent.value, bn.value
 
-		bn.value, bn.parent.value = bn.parent.value, bn.value
+			if bn.parent.parent != nil {
+				bn = bn.parent
 
-		if bn.parent.parent != nil {
-			bn = bn.parent
+			}
 
 		}
 
+		if bn.value < bn.parent.value {
+			bn.value, bn.parent.value = bn.parent.value, bn.value
+		}
 	}
-	if bn.value < bn.parent.value {
-		bn.value, bn.parent.value = bn.parent.value, bn.value
-	}
-
 }
