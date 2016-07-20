@@ -1,0 +1,443 @@
+bplist00—_WebMainResource’	
+^WebResourceURL_WebResourceData_WebResourceMIMEType_WebResourceTextEncodingName_WebResourceFrameName_Tfile:///var/folders/mt/tvw119292ylgztl20h7fq0yh0000gp/T/cover608926166/coverage.htmlO?¢<!DOCTYPE html><html><head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/Sreevani871/binomialheap/bhnode.go (100.0%)</option>
+				
+				<option value="file1">github.com/Sreevani871/binomialheap/binomialheap.go (92.3%)</option>
+				
+				<option value="file2">github.com/Sreevani871/binomialheap/list.go (100.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none;">/* This program represents structure of node in binomial heap and implements union operation which is essential in performing any operations with binomial heap */
+package binomialheap
+
+/* BinominalHeapNode struct declaration*/
+type BinomialHeapNode struct {
+        Value        int               //value for storig element into the bh
+        order        int               //order represents order of node means number of children it has
+        parent       *BinomialHeapNode //this is a parent node
+        childrenNode *BinomialHeapNode //childrenNode used to link subtrees whenever union operation performed on binomialheap
+        rightsibling *BinomialHeapNode //rightsibling represents
+
+}
+
+/* Returns a struct of node,assigning value to it*/
+func NewBinomialHeapNode(value int) *BinomialHeapNode <span class="cov8" title="1">{
+        return &amp;BinomialHeapNode{
+                Value:        value,
+                order:        0,
+                parent:       nil,
+                childrenNode: nil,
+                rightsibling: nil,
+        }
+}</span>
+
+/* contain iserts the linked nodes into into the DL */
+func (bn *BinomialHeapNode) Link(other *BinomialHeapNode) <span class="cov8" title="1">{
+
+        InsertDL(&amp;bn.childrenNode, other)
+        other.parent = bn //make bn node as the parent node of other node
+}</span>
+
+/* Union operation takes two binomialheapnodes of same order and compare its parent values and make the one as a child of other which has less parent value*/
+func Union(n1 *BinomialHeapNode, n2 *BinomialHeapNode) *BinomialHeapNode <span class="cov8" title="1">{
+
+        if n1.Value &lt; n2.Value </span><span class="cov8" title="1">{
+                n1.order += 1
+                n1.Link(n2)
+                return n1
+        }</span><span class="cov8" title="1"> else {
+                n2.order += 1
+                n2.Link(n1)
+                return n2
+        }</span>
+}
+
+/*Decrease the node value by value passed by the parameter.If the parentnode value is greater than decresed key node then swaping takes place */
+func (bn *BinomialHeapNode) Decrease_Key1(val int) *BinomialHeapNode <span class="cov8" title="1">{
+        bn.Value = val
+
+        if bn.parent != nil </span><span class="cov8" title="1">{
+                for bn.parent != nil &amp;&amp; bn.parent.parent != nil &amp;&amp; bn.Value &lt; bn.parent.Value </span><span class="cov8" title="1">{
+
+                        bn.Value, bn.parent.Value = bn.parent.Value, bn.Value
+
+                        if bn.parent.parent != nil </span><span class="cov8" title="1">{
+                                bn = bn.parent
+
+                        }</span>
+
+                }
+
+                <span class="cov8" title="1">if bn.Value &lt; bn.parent.Value </span><span class="cov8" title="1">{
+                        bn.Value, bn.parent.Value = bn.parent.Value, bn.Value
+                }</span>
+        }
+
+        <span class="cov8" title="1">return bn</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none;">/* Binomial heap is forest consisting of binomial trees which satisfy min heap property.
+Here it consists of Binomialheap forest structure and implementation of binomial heap interface methods */
+
+package binomialheap
+
+import "fmt"
+
+/* Structure representing binomial heap forest*/
+type Binomial_Heap struct {
+        forest_head *BinomialHeapNode //forest_head is the leftmost node in the binomial heap
+        size        int               //size represents the number of nodes in the binomial heap
+}
+
+/* New method returns new Binmomial heap whenever it calls */
+func New() *Binomial_Heap <span class="cov8" title="1">{
+
+        return &amp;Binomial_Heap{
+                forest_head: nil, size: 0,
+        }
+}</span>
+
+/* Method for inserting nodes into the binomial heap*/
+func (bh *Binomial_Heap) Insert(value int) *BinomialHeapNode <span class="cov8" title="1">{
+        bh.size += 1                          //incrementing no.of elements
+        newnode := NewBinomialHeapNode(value) //newnode is struct of binomialheap node having node value
+        bh.put(newnode)                       //inserting newnode into the DL
+        return newnode
+}</span>
+
+/* Method for deleting minimum element from the binomial heap */
+func (bh *Binomial_Heap) ExtractMin() int <span class="cov8" title="1">{
+        if bh.forest_head == nil </span><span class="cov8" title="1">{
+                //fmt.Println("Heap is empty")
+                return -1
+        }</span>
+        <span class="cov8" title="1">bh.size -= 1
+        min := GetMinimumNode(bh.forest_head)
+        RemoveFromDL(&amp;bh.forest_head, min)
+
+        for _, child := range NodeIterator(min.childrenNode) </span><span class="cov8" title="1">{
+
+                RemoveFromDL(&amp;min.childrenNode, child)
+                bh.put(child)
+        }</span>
+
+        <span class="cov8" title="1">return min.Value</span>
+}
+
+/* Find_Min method gets the minimum node value from binomial heap*/
+func (bh *Binomial_Heap) GetMinimumValue() int <span class="cov8" title="1">{
+        if bh.forest_head == nil </span><span class="cov8" title="1">{
+                return -1
+        }</span>
+        <span class="cov8" title="1">head := bh.forest_head
+        min := GetMinimumNode(head)
+        return min.Value</span>
+
+}
+func (bh *Binomial_Heap) Decrease_Key(node *BinomialHeapNode, decval int) *BinomialHeapNode <span class="cov8" title="1">{
+        resnode := node.Decrease_Key1(decval)
+        return resnode
+}</span>
+
+/* Decrease_key method decreases kenode value by passed value*/
+
+/*func (bh *Binomial_Heap) Decrease_Key(keyvalue int, decvalue int) {
+
+        if bh.forest_head == nil {
+                fmt.Println("binomial heap is empty")
+        }
+
+        for _, node := range NodeIterator(bh.forest_head) { //Iterate through all tree nodes
+                node.SearchDFS(keyvalue, decvalue)
+
+        }
+
+}
+*/
+/* SearchDFS method used to find the node which contains keyvalue to decrease */
+/*func (bn *BinomialHeapNode) SearchDFS(keyvalue int, decvalue int) {
+        var check int
+        if bn.value == keyvalue {
+
+                bn.Decrease_Key1(decvalue) //If keynode found Decrease_Key1 method called to decrease the keyvalue by passed decval
+                check = 1
+        }
+        for _, child := range NodeIterator(bn.childrenNode) { //Iterating binomial heap downwards
+                if check != 1 {
+                        child.SearchDFS(keyvalue, decvalue)
+                } else {
+                        break
+                }
+
+        }
+
+}*/
+
+/* Method for merging two binomial heaps */
+func (bh *Binomial_Heap) Merge(other *Binomial_Heap) <span class="cov8" title="1">{
+        bh.size += other.size
+
+        for _, child := range NodeIterator(other.forest_head) </span><span class="cov8" title="1">{
+
+                RemoveFromDL(&amp;other.forest_head, child)
+                bh.put(child)
+        }</span>
+}
+
+/* Returns the no.of nodes in binomial heap */
+
+func (bh *Binomial_Heap) Size() int <span class="cov8" title="1">{
+        return bh.size
+}</span>
+
+func (bh *Binomial_Heap) IsEmpty() bool <span class="cov0" title="0">{
+        return bh.forest_head == nil
+}</span>
+
+/* Inserting newnode into the DL maintaing unique order trees in binomial heap */
+func (bh *Binomial_Heap) put(newnode *BinomialHeapNode) <span class="cov8" title="1">{
+
+        srnode := GetNodeWithOrder(bh.forest_head, newnode.order) //It returns whether the binomial heap contains any tree with order same as newnode
+        if srnode == nil </span><span class="cov8" title="1">{                                        //No tree having the same order of newnode
+                InsertDL(&amp;bh.forest_head, newnode) //Inserting elements into the DL
+        }</span><span class="cov8" title="1"> else {
+                RemoveFromDL(&amp;bh.forest_head, srnode) //If any tree order in bh matches with newnode order,remove it from DL
+                linkednode := Union(srnode, newnode)  //then perform union operation
+                bh.put(linkednode)                    //then inset the linked node into the DL
+        }</span>
+}
+
+/* This method prints all tree nodes in binomial heap */
+func (bh *Binomial_Heap) Print() <span class="cov8" title="1">{
+
+        if bh.forest_head == nil </span><span class="cov0" title="0">{
+                fmt.Println("binomial heap is empty")
+        }</span>
+        <span class="cov8" title="1">for _, node := range NodeIterator(bh.forest_head) </span><span class="cov8" title="1">{ //Iterate through all tree nodes
+                fmt.Println("bthead", node.Value, node.order) //Printing binomial tree head nodes and order
+                node.PrintDFS()                               //Iteration through each tree in binomial tree
+        }</span>
+}
+
+/* Print the nodes in binomial tree in depth first search manner*/
+func (bn *BinomialHeapNode) PrintDFS() <span class="cov8" title="1">{
+
+        fmt.Printf("Value:%d Order:%d \n", bn.Value, bn.order)
+
+        for _, child := range NodeIterator(bn.childrenNode) </span><span class="cov8" title="1">{ //Iterating binomial heap downwards
+                fmt.Printf("Value:%d Order:%d Parent:%d\n", child.Value, child.order, child.parent.Value)
+                child.PrintDFS()
+        }</span>
+}
+
+/* This method returns number of trees present in binomial heap  */
+func (bh *Binomial_Heap) Trees() int <span class="cov8" title="1">{
+        n := bh.size
+        var count int
+        for n &gt; 0 </span><span class="cov8" title="1">{
+                if n%2 == 1 </span><span class="cov8" title="1">{
+                        count += 1
+                }</span>
+                <span class="cov8" title="1">n = n / 2</span>
+        }
+        <span class="cov8" title="1">fmt.Println(count)
+        return count</span>
+}
+func (bh *Binomial_Heap) FindMin() int <span class="cov0" title="0">{
+        srnode := GetMinimumNode(bh.forest_head)
+        return srnode.Value
+}</span>
+</pre>
+		
+		<pre class="file" id="file2" style="display: block;">/* Double linked list is used to store values of a binomial heap */
+
+package binomialheap
+
+//import "fmt"
+
+/* Method to insert node into the forest*/
+func InsertDL(head **BinomialHeapNode, node *BinomialHeapNode) <span class="cov8" title="1">{
+
+        var prev *BinomialHeapNode
+        var next *BinomialHeapNode
+
+        prev = nil
+        next = *head
+        for next != nil &amp;&amp; node.order &lt; next.order </span><span class="cov8" title="1">{
+                prev = next
+                next = next.rightsibling
+        }</span>
+        <span class="cov8" title="1">if prev == nil &amp;&amp; next == nil </span><span class="cov8" title="1">{
+                *head = node
+        }</span><span class="cov8" title="1"> else if prev == nil &amp;&amp; next != nil </span><span class="cov8" title="1">{
+                node.rightsibling = *head
+                *head = node
+        }</span><span class="cov8" title="1"> else if prev != nil &amp;&amp; next == nil </span><span class="cov8" title="1">{
+                prev.rightsibling = node
+        }</span><span class="cov8" title="1"> else if prev != nil &amp;&amp; next != nil </span><span class="cov8" title="1">{
+                prev.rightsibling = node
+                node.rightsibling = next
+        }</span>
+}
+
+/* Method to remove node from forest */
+func RemoveFromDL(head **BinomialHeapNode, node *BinomialHeapNode) <span class="cov8" title="1">{
+        leftsib := GetLeftsibling(*head, node)
+        if leftsib == nil </span><span class="cov8" title="1">{
+                *head = node.rightsibling
+        }</span><span class="cov8" title="1"> else {
+                leftsib.rightsibling = node.rightsibling
+
+        }</span>
+        <span class="cov8" title="1">node.rightsibling = nil</span>
+        //fmt.Println("node.rightsibling value", node.rightsibling.value)
+}
+
+/* To remove node form binomial heap need to find leftsibling,So this method returns leftsibling*/
+func GetLeftsibling(head *BinomialHeapNode, node *BinomialHeapNode) *BinomialHeapNode <span class="cov8" title="1">{
+
+        if head == node </span><span class="cov8" title="1">{
+                return nil
+        }</span>
+        <span class="cov8" title="1">current := head
+        for current.rightsibling != node </span><span class="cov8" title="1">{
+                current = current.rightsibling
+        }</span>
+        <span class="cov8" title="1">return current</span>
+}
+
+/* It returns node with same order of parameter node passed,otherwise returns nil */
+func GetNodeWithOrder(head *BinomialHeapNode, order int) *BinomialHeapNode <span class="cov8" title="1">{
+        current := head
+        for current != nil </span><span class="cov8" title="1">{
+                if current.order == order </span><span class="cov8" title="1">{
+                        return current
+                }</span>
+                <span class="cov8" title="1">current = current.rightsibling</span>
+        }
+        <span class="cov8" title="1">return nil</span>
+}
+
+/* Returns minimum node from binomial tree */
+func GetMinimumNode(head *BinomialHeapNode) *BinomialHeapNode <span class="cov8" title="1">{
+        min := head
+        current := head.rightsibling
+
+        for current != nil </span><span class="cov8" title="1">{
+                if current.Value &lt; min.Value </span><span class="cov8" title="1">{
+                        min = current
+                }</span>
+                <span class="cov8" title="1">current = current.rightsibling</span>
+        }
+        <span class="cov8" title="1">return min</span>
+}
+
+/* Iterates trough level wise */
+func NodeIterator(head *BinomialHeapNode) []*BinomialHeapNode <span class="cov8" title="1">{
+
+        var arr []*BinomialHeapNode
+        trnode := head
+        for trnode != nil </span><span class="cov8" title="1">{
+                arr = append(arr, trnode)
+
+                trnode = trnode.rightsibling
+        }</span>
+        <span class="cov8" title="1">return arr</span>
+}
+</pre>
+		
+		</div>
+	
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+
+</body></html>Ytext/htmlUUTF-8P    ( 7 I _ } î Î@ë@õ@°                           @¢

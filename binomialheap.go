@@ -20,14 +20,15 @@ func New() *Binomial_Heap {
 }
 
 /* Method for inserting nodes into the binomial heap*/
-func (bh *Binomial_Heap) Insert(value int) {
+func (bh *Binomial_Heap) Insert(value int) *BinomialHeapNode {
 	bh.size += 1                          //incrementing no.of elements
 	newnode := NewBinomialHeapNode(value) //newnode is struct of binomialheap node having node value
 	bh.put(newnode)                       //inserting newnode into the DL
+	return newnode
 }
 
 /* Method for deleting minimum element from the binomial heap */
-func (bh *Binomial_Heap) Del_Min() int {
+func (bh *Binomial_Heap) ExtractMin() int {
 	if bh.forest_head == nil {
 		//fmt.Println("Heap is empty")
 		return -1
@@ -42,28 +43,27 @@ func (bh *Binomial_Heap) Del_Min() int {
 		bh.put(child)
 	}
 
-	return min.value
+	return min.Value
 }
 
 /* Find_Min method gets the minimum node value from binomial heap*/
-func (bh *Binomial_Heap) Find_Min() int {
+func (bh *Binomial_Heap) GetMinimumValue() int {
 	if bh.forest_head == nil {
 		return -1
 	}
 	head := bh.forest_head
 	min := GetMinimumNode(head)
-	return min.value
+	return min.Value
 
+}
+func (bh *Binomial_Heap) Decrease_Key(node *BinomialHeapNode, decval int) *BinomialHeapNode {
+	resnode := node.Decrease_Key1(decval)
+	return resnode
 }
 
 /* Decrease_key method decreases kenode value by passed value*/
 
-func (bh *Binomial_Heap) Decrease_Key(keyvalue int, decvalue int) {
-	bh.Decrease(keyvalue, decvalue)
-
-}
-
-func (bh *Binomial_Heap) Decrease(keyvalue int, decvalue int) {
+/*func (bh *Binomial_Heap) Decrease_Key(keyvalue int, decvalue int) {
 
 	if bh.forest_head == nil {
 		fmt.Println("binomial heap is empty")
@@ -75,20 +75,25 @@ func (bh *Binomial_Heap) Decrease(keyvalue int, decvalue int) {
 	}
 
 }
-
+*/
 /* SearchDFS method used to find the node which contains keyvalue to decrease */
-func (bn *BinomialHeapNode) SearchDFS(keyvalue int, decvalue int) {
+/*func (bn *BinomialHeapNode) SearchDFS(keyvalue int, decvalue int) {
+	var check int
 	if bn.value == keyvalue {
 
 		bn.Decrease_Key1(decvalue) //If keynode found Decrease_Key1 method called to decrease the keyvalue by passed decval
-
+		check = 1
 	}
 	for _, child := range NodeIterator(bn.childrenNode) { //Iterating binomial heap downwards
+		if check != 1 {
+			child.SearchDFS(keyvalue, decvalue)
+		} else {
+			break
+		}
 
-		child.SearchDFS(keyvalue, decvalue)
 	}
 
-}
+}*/
 
 /* Method for merging two binomial heaps */
 func (bh *Binomial_Heap) Merge(other *Binomial_Heap) {
@@ -131,7 +136,7 @@ func (bh *Binomial_Heap) Print() {
 		fmt.Println("binomial heap is empty")
 	}
 	for _, node := range NodeIterator(bh.forest_head) { //Iterate through all tree nodes
-		fmt.Println("bthead", node.value, node.order) //Printing binomial tree head nodes and order
+		fmt.Println("bthead", node.Value, node.order) //Printing binomial tree head nodes and order
 		node.PrintDFS()                               //Iteration through each tree in binomial tree
 	}
 }
@@ -139,10 +144,10 @@ func (bh *Binomial_Heap) Print() {
 /* Print the nodes in binomial tree in depth first search manner*/
 func (bn *BinomialHeapNode) PrintDFS() {
 
-	fmt.Printf("Value:%d Order:%d \n", bn.value, bn.order)
+	fmt.Printf("Value:%d Order:%d \n", bn.Value, bn.order)
 
 	for _, child := range NodeIterator(bn.childrenNode) { //Iterating binomial heap downwards
-		fmt.Printf("Value:%d Order:%d Parent:%d\n", child.value, child.order, child.parent.value)
+		fmt.Printf("Value:%d Order:%d Parent:%d\n", child.Value, child.order, child.parent.Value)
 		child.PrintDFS()
 	}
 }
@@ -162,5 +167,5 @@ func (bh *Binomial_Heap) Trees() int {
 }
 func (bh *Binomial_Heap) FindMin() int {
 	srnode := GetMinimumNode(bh.forest_head)
-	return srnode.value
+	return srnode.Value
 }

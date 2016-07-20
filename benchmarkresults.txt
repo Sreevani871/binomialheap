@@ -1,0 +1,8 @@
+PASS
+BenchmarkInsert-4      	10000000	       260 ns/op	      48 B/op	       1 allocs/op
+BenchmarkDel_Min-4     	500000000	         3.13 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMerge-4       	200000000	        10.0 ns/op	       0 B/op	       0 allocs/op
+BenchmarkDecrease_Key-4	300000000	         5.78 ns/op	       0 B/op	       0 allocs/op
+BenchmarkFindMin-4     	100000000	        14.1 ns/op	       0 B/op	       0 allocs/op
+BenchmarkIsEmpty-4     	2000000000	         0.69 ns/op	       0 B/op	       0 allocs/op
+ok  	command-line-arguments	13.377s

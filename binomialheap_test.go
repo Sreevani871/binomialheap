@@ -15,7 +15,7 @@ func Test_Insert(t *testing.T) {
 	if s != 1 {
 		t.Errorf("something went wrong.")
 	}
-	v := heap.Del_Min()
+	v := heap.ExtractMin()
 	if v != 1 {
 		t.Error(
 			"Expected", 1,
@@ -34,15 +34,31 @@ func Test_Insert_1(t *testing.T) {
 		t.Errorf("something went wrong")
 	}
 	for i := 0; i < Size; i++ {
-		pval := heap.Del_Min()
+		pval := heap.ExtractMin()
 		if pval != i {
 			t.Errorf("expected %d, got %d", i, pval)
 		}
 	}
 }
+
+func TestDecreaseKey(t *testing.T) {
+	heap := S.New()
+	heap.Insert(20)
+	val1 := heap.Insert(30)
+	heap.Insert(50)
+	heap.Insert(-20)
+	heap.Insert(-100)
+	heap.Decrease_Key(val1, -200)
+	val2 := heap.GetMinimumValue()
+	if val2 != -200 {
+		t.Error("Something went wrong")
+	}
+
+}
+
 func Test_Del_Min(t *testing.T) {
 	heap := S.New()
-	d := heap.Del_Min()
+	d := heap.ExtractMin()
 	if d != -1 {
 		t.Error("expected", -1, "got", d)
 	}
@@ -57,7 +73,7 @@ func Test_Del_Min1(t *testing.T) {
 		heap.Insert(n)
 	}
 	for i := 0; i < size; i++ {
-		n := heap.Del_Min()
+		n := heap.ExtractMin()
 		if n != i {
 			t.Error("Expected", i, "Got", n)
 		}
@@ -69,7 +85,7 @@ func Test_Del_Min1(t *testing.T) {
 		heap.Insert(v)
 	}
 	for _, v := range DelOrder {
-		d := heap.Del_Min()
+		d := heap.ExtractMin()
 		if d != v {
 			t.Error("expected", v, "Got", d)
 		}
@@ -79,7 +95,7 @@ func Test_Del_Min1(t *testing.T) {
 
 func Test_Find_Min(t *testing.T) {
 	heap := S.New()
-	h := heap.Find_Min()
+	h := heap.GetMinimumValue()
 	if h != -1 {
 		t.Error("Something went wrong")
 	}
@@ -87,7 +103,7 @@ func Test_Find_Min(t *testing.T) {
 	for _, v := range Values {
 		heap.Insert(v)
 	}
-	d := heap.Find_Min()
+	d := heap.GetMinimumValue()
 	if d != -248 {
 		t.Error("expected", -248, "Got", d)
 	}
@@ -117,7 +133,7 @@ func Test_merge(t *testing.T) {
 	}
 
 	for i := 0; i < size; i++ {
-		d := h1.Del_Min()
+		d := h1.ExtractMin()
 		fmt.Println("deleted:", d)
 		if d != Values2[i] {
 			t.Errorf("expected %d, got %d", Values2[i], d)

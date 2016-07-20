@@ -73,7 +73,7 @@ func GetMinimumNode(head *BinomialHeapNode) *BinomialHeapNode {
 	current := head.rightsibling
 
 	for current != nil {
-		if current.value < min.value {
+		if current.Value < min.Value {
 			min = current
 		}
 		current = current.rightsibling

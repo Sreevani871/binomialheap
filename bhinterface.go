@@ -3,9 +3,9 @@
 package binomialheap
 
 type BinomialHeap interface {
-	Insert(int)
-	Del_Min() int
-	Find_Min()
+	Insert(int) *BinomialHeapNode
+	ExtractMin() int
+	GetMinimumValue()
 	Decrease_Key()
 	Merge(BinomialHeap)
 }

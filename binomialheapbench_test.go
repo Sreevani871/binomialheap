@@ -16,15 +16,7 @@ func BenchmarkDel_Min(b *testing.B) {
 	heap := S.New()
 	heap.Insert(4)
 	for i := 0; i < b.N; i++ {
-		heap.Del_Min()
-	}
-
-}
-
-func BenchmarkFind_Min(b *testing.B) {
-	heap := insert(0, 100000)
-	for i := 0; i < b.N; i++ {
-		heap.Find_Min()
+		heap.ExtractMin()
 	}
 
 }
@@ -38,8 +30,9 @@ func BenchmarkMerge(b *testing.B) {
 }
 func BenchmarkDecrease_Key(b *testing.B) {
 	heap := insert(0, 100000)
+	n2 := heap.Insert(-100)
 	for i := 0; i < b.N; i++ {
-		heap.Decrease_Key(40, 1)
+		heap.Decrease_Key(n2, -200)
 	}
 
 }
@@ -47,7 +40,7 @@ func BenchmarkDecrease_Key(b *testing.B) {
 func BenchmarkFindMin(b *testing.B) {
 	heap1 := insert(0, 100000)
 	for i := 0; i < b.N; i++ {
-		heap1.FindMin()
+		heap1.GetMinimumValue()
 	}
 }
 
