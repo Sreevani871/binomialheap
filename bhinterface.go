@@ -5,7 +5,7 @@ package binomialheap
 type BinomialHeap interface {
 	Insert(int) *BinomialHeapNode
 	ExtractMin() int
-	GetMinimumValue()
+	GetMinimumValue()int
 	Decrease_Key()
 	Merge(BinomialHeap)
 }
